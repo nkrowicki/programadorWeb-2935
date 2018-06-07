@@ -1,14 +1,18 @@
 /Clase 00
+
+# Common files
+
 .DS_Store
 /**/.DS_Store
 /node_modules
 
 
+# /Clase 00/Profe/Ejercicio
+# /Clase 00/Profe/Desafío
 
-/Clase 03/Profe/Ejercicio
-/Clase 03/Profe/Desafío
-/Clase 04
-/Clase 05
+/Clase 04/Profe/Ejercicio
+/Clase 04/Profe/Desafío
+
 
 
 
