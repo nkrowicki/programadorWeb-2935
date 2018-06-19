@@ -1,4 +1,4 @@
-# Crear una función constructora de objetos Student
+# Crear una función constructora de objetos Student [Pieza del Workshop I]
 
 - Crear una función que permita crear un objeto Student mediante el constructor `new`, el objeto deberá tener las siguientes propiedades:
    - Publicas:
