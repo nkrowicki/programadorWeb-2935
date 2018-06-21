@@ -5,6 +5,8 @@
 ```js
 includesText('Pa', 'Patricia') // Deberá devolver true
 
+includesText('pa', 'Patricia') // Deberá devolver true
+
 includesText('Patricia', 'Pa') // Deberá devolver false
 
 includesText(2, 'Pa') // Deberá devolver false
