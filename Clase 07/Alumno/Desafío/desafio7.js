@@ -16,7 +16,6 @@ var saveLocalList = (key, value) => {
 
 var getLocalList = (name) => {
 
-
   data = localStorage.getItem(name)
 
   if (data) {
