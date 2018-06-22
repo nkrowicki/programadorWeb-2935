@@ -37,4 +37,4 @@ function setLocalList (key, list) {
 }
 
 // Pruebo la función
-setLocalList('list', studentsList)
+setLocalList('studentsList', studentsList)

@@ -21,5 +21,14 @@ function getLocalList (key) {
 // Pruebo la función
 var studentsList = getLocalList('studentsList')
 
-// Muestro el resultado de la función
-console.log(studentsList)
+if (studentsList) {
+  // Muestro el resultado de la función
+  console.log(studentsList)
+  if (studentsList.length) {
+    console.log('Tiene guardados ' + studentsList.length + ' estudiantes')
+  } else {
+    console.log('La lista esta vacía')
+  }
+} else {
+  console.log('Le pase una key incorrecta')
+}
