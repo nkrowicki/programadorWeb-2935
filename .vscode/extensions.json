@@ -4,5 +4,6 @@
 	"recommendations": [
 		// Extension identifier format: ${publisher}.${name}. Example: vscode.csharp
 		"remimarsal.prettier-now",
+		"aleksandardev.vscode-sequence-diagrams"
 	]
 }
