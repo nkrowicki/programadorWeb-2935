@@ -2,7 +2,7 @@
 
 var student = {
   firstName: 'Juan',
-  lastName: 'Peréz',
+
   dni: 22999333,
   email: 'juan@gmail.com'
 }
