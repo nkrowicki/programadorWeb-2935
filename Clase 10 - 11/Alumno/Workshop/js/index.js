@@ -1,24 +1,24 @@
 //-----------------------------Start clase5
 // Datos
-var students = [{
-    firstName: 'Juan',
-    lastName: 'Pérez',
-    dni: 45678987,
-    email: 'juan@gmail.com'
-  },
-  {
-    firstName: 'Ana',
-    lastName: 'Fernandez',
-    dni: 45678989,
-    email: 'ana@gmail.com'
-  },
-  {
-    firstName: 'Pedro',
-    lastName: 'Mármol',
-    dni: 45678956,
-    email: 'pedro@gmail.com'
-  }
-]
+// var students = [{
+//     firstName: 'Juan',
+//     lastName: 'Pérez',
+//     dni: 45678987,
+//     email: 'juan@gmail.com'
+//   },
+//   {
+//     firstName: 'Ana',
+//     lastName: 'Fernandez',
+//     dni: 45678989,
+//     email: 'ana@gmail.com'
+//   },
+//   {
+//     firstName: 'Pedro',
+//     lastName: 'Mármol',
+//     dni: 45678956,
+//     email: 'pedro@gmail.com'
+//   }
+// ]
 
 
 //-----------------------------Fin clase5
@@ -40,57 +40,12 @@ var saveLocalList = (key, value) => {
   }
 }
 
-var getLocalList = (name) => {
-
-  data = localStorage.getItem(name)
-
-  if (data) {
-    try {
-      data = JSON.parse(data)
-      return data
-    } catch (e) {
-      console.log(e)
-    }
-  }
-  return []
-
-}
-
-//Ejercicio
-var studentsList = ['CARLOS', 'GERONIMO', 'NICOLAS', 'LUCAS', 'MARIA', 'FEDERICO', 'ANTONIO', 'LORNA', 'JULIAN', 'DIEGO', 'DANIELA', 'JUAN', 'MATEO', 'BARBARA', 'AGUSTIN', 'MARIO', 'MARIEL', 'ANA', 'FLORENCIA']
-saveLocalList('studentsList', studentsList)
-
-//Desafio
-var students = getLocalList('studentsList') // Debe devolver siempre un Array [] vacío o con elementos [...]
-console.log(students)
-
+//saveLocalList('studentsList', studentsList)
 
 
 //-----------Fin Desafio
 
 //-----------Inicio Ejercicio
-// Datos de prueba
-var studentsList = [
-  'CARLOS',
-  'GERONIMO',
-  'NICOLAS',
-  'LUCAS',
-  'MARIA',
-  'FEDERICO',
-  'ANTONIO',
-  'LORNA',
-  'JULIAN',
-  'DIEGO',
-  'DANIELA',
-  'JUAN',
-  'MATEO',
-  'BARBARA',
-  'AGUSTIN',
-  'MARIO',
-  'MARIEL',
-  'ANA',
-  'FLORENCIA'
-]
 
 /**
  * Defino la función setLocalList
@@ -108,7 +63,7 @@ function setLocalList(key, list) {
 }
 
 // Pruebo la función
-setLocalList('studentsList', studentsList)
+//setLocalList('studentsList', studentsList)
 
 
 //-----------Fin Ejercicio
@@ -118,16 +73,8 @@ setLocalList('studentsList', studentsList)
 
 //------------------------------Inicio clase8
 
-//Datos de este ejercicio
-// var newStudent = {
-//   firstName: 'Juan',
-//   lastName: 'Peréz',
-//   dni: 22999333,
-//   email: 'juan@gmail.com'
-// }
-
 // Datos de la clase 5
-var students = [{
+var studentsList = [{
     firstName: 'Juan',
     lastName: 'Pérez',
     dni: 45678987,
@@ -147,79 +94,14 @@ var students = [{
   }
 ]
 
-//Function
-var createStudentNode = (alumn) => {
-
-  //Create element 'li'
-  let liNode = d.createElement('li')
-  // Add class 
-  liNode.className = 'list-group-item';
-  //Aux Element
-  let auxElement
-  let flagName = false
-
-  //Iterando un objeto usando foreach
-  // Object.entries devuelve una matriz de pares propios de una propiedad enumerable [key, value]
-  //  de un objeto dado, en el mismo orden que es proporcionado por for...in 
-  // (La diferencia es que un bucle for-in enumera las propiedades en la cadena de prototype). 
-
-  Object.entries(alumn).forEach((element, i) => {
-    const [key, value] = element;
-
-    switch (key) {
-
-      case 'firstName':
-      case 'lastName':
-        if (flagName === false) {
-          auxElement = d.createElement('h1')
-          flagName = true
-        } else auxElement.innerHTML += ' '
-        break;
-
-      case 'dni':
-        auxElement = d.createElement('h3')
-        auxElement.innerHTML = 'DNI: '
-        liNode.className += ' ' + value
-        break;
-
-      case 'email':
-        auxElement = d.createElement('p')
-        auxElement.innerHTML = 'Email: '
-        break;
-
-      default:
-        auxElement = d.createElement('p')
-        break;
-    }
-
-    auxElement.innerHTML += value
-    liNode.appendChild(auxElement)
-  });
-  return liNode
-}
-
-let d = document
-
-let mainList = d.getElementById('mainList')
-mainList.className = 'list-group'
-mainList.style.maxWidth = '400px'
-
-// ---------- DATOS DE ESTA CLASE ----------------
-// var studentNode = createStudentNode(newStudent)
-
-// -------------Add child to DOM-> ul (mainList)
-// mainList.appendChild(studentNode)
-
-// // ---------- DATOS DE LA CLASE 5 ----------------
-// students.forEach((student) => {
-//   var studentNode = createStudentNode(student)
-//   // Add child to DOM-> ul (mainList)
-//   mainList.appendChild(studentNode)
-
-// });
+setLocalList('studentsList', studentsList)
 
 
 //------------------- Fin clase8
+
+
+
+
 
 
 
@@ -231,6 +113,12 @@ mainList.style.maxWidth = '400px'
 
 
 window.onload = () => {
+
+  //Recibe una palabra y solo devuelve true si es una palabra (letras)
+  let isWord = (word) => {
+    if (/^[a-zA-Z]+$/.test(word)) return true
+    else return false
+  }
 
   //Creacion de clase Student la cual luego va a ser instanciada para crear los objetos
   class Student {
@@ -253,6 +141,83 @@ window.onload = () => {
     }
   }
 
+  //Recibe un array de objetos 'students' y los muestra
+  let viewStudents = (students) => {
+
+    let d = document
+
+    let mainList = d.getElementById('mainList')
+    mainList.className = 'list-group'
+    mainList.style.maxWidth = '400px'
+
+
+    students.forEach((student) => {
+      let studentNode = createStudentNode(student)
+      // Add child to DOM-> ul (mainList)
+      mainList.appendChild(studentNode)
+    })
+
+  }
+
+
+  //Devuelve un nodo listo para incrustar
+  let createStudentNode = (alumn) => {
+
+    let d = document
+    //Create element 'li'
+    let liNode = d.createElement('li')
+    // Add class 
+    liNode.className = 'list-group-item';
+    //Aux Element
+    let auxElement
+    let flagName = false
+
+    //Iterando un objeto usando foreach, devuelve un nodo listo para agregar
+    // Object.entries devuelve una matriz de pares propios de una propiedad enumerable [key, value]
+    //  de un objeto dado, en el mismo orden que es proporcionado por for...in 
+    // (La diferencia es que un bucle for-in enumera las propiedades en la cadena de prototype). 
+
+    Object.entries(alumn).forEach((element, i) => {
+      const [key, value] = element;
+
+      switch (key) {
+
+        case 'firstName':
+        case 'lastName':
+          if (flagName === false) {
+            auxElement = d.createElement('h1')
+            flagName = true
+          } else auxElement.innerHTML += ' '
+          break;
+
+        case 'dni':
+          auxElement = d.createElement('h3')
+          auxElement.innerHTML = 'DNI: '
+          liNode.className += ' ' + value
+          break;
+
+        case 'email':
+          auxElement = d.createElement('p')
+          auxElement.innerHTML = 'Email: '
+          break;
+
+        default:
+          auxElement = d.createElement('p')
+          break;
+      }
+
+      auxElement.innerHTML += value
+      liNode.appendChild(auxElement)
+    });
+    return liNode
+  }
+
+  //Cargar lo del localstorage y mostrarlo
+  let refreshList = () => {
+    let students = getLocalList('studentsList') // Debe devolver siempre un Array [] vacío o con elementos [...]
+    viewStudents(students)
+  }
+
   //Obtenemos los datos ingresados en el input por el usuario
   //Devuelve un objeto ya instanciado de la clase estudiante
   let getFormValues = () => {
@@ -268,63 +233,197 @@ window.onload = () => {
     return alumn
   }
 
-  //Funcion que chequea si los datos obligatorios están y son correctos
-  //Si alguno es incorrecto-> Colorea en rojo el campo incorrecto y
-  //devuelve false, caso contrario (Todos correctos) devuelve true
-  let checkFormValues = (newStudent) => {
+  //Funcion que valida el campo
+  //incorrecto-> Colorea en rojo el campo incorrecto y Deshabilita el botón 'Agregar Alumno'
+  //correcto- > Habilita el botón 'Agregar alumno'
+  let validateField = (e) => {
 
-    let flag = true
+    let dni = document.getElementById('dni'),
+      firstName = document.getElementById('firstName'),
+      btnAddAlumn = document.getElementById('addStudentButton'),
+      dataInput = e.target.value
 
-    //Check firstName
-    if (newStudent.firstName !== null && newStudent.firstName !== '' && isNaN(newStudent.firstName)) {
-      document.getElementById('firstName').classList.remove('is-invalid')
-      document.getElementById('firstName').classList.add('is-valid')
-    } else {
-      document.getElementById('firstName').classList.remove('is-valid')
-      document.getElementById('firstName').classList.add('is-invalid')
-      if (flag) flag = false
+    switch (e.target.id) {
+
+      case 'dni':
+        //Check dni
+        parsedValue = parseInt(dataInput, 10)
+
+        if (!isNaN(dataInput) && dataInput !== null && dataInput !== '' && parsedValue > 0 && Number.isInteger(parsedValue)) {
+          dni.classList.remove('is-invalid')
+          dni.classList.add('is-valid')
+        } else {
+          dni.classList.remove('is-valid')
+          dni.classList.add('is-invalid')
+        }
+
+        break;
+
+      case 'firstName':
+        //Check firstName
+
+        if (dataInput !== null && dataInput !== '' && isWord(dataInput)) {
+          firstName.classList.remove('is-invalid')
+          firstName.classList.add('is-valid')
+        } else {
+          firstName.classList.remove('is-valid')
+          firstName.classList.add('is-invalid')
+        }
+
+        break;
+
+      default:
+        break;
     }
-    //Check dni
-    parsedValue = parseInt(newStudent.dni, 10)
 
-    if (newStudent.dni !== null && newStudent.dni !== '' && !isNaN(parsedValue) && parsedValue > 0) {
-      document.getElementById('dni').classList.remove('is-invalid')
-      document.getElementById('dni').classList.add('is-valid')
+    if (firstName.classList.contains('is-valid') && dni.classList.contains('is-valid')) {
+      btnAddAlumn.disabled = false
     } else {
-      document.getElementById('dni').classList.remove('is-valid')
-      document.getElementById('dni').classList.add('is-invalid')
-      if (flag) flag = false
+      btnAddAlumn.disabled = true
+    }
+  }
+
+  //Valida dni y asigna al input correspondiente la clase correspondiente (is-invalid o is-valid)
+  let validateDni = (e) => {
+    let element = e.target,
+      dataInput = element.value
+    //Check dni
+    parsedValue = parseInt(element.value, 10)
+
+    if (!isNaN(dataInput) && dataInput !== null && dataInput !== '' && parsedValue > 0 && Number.isInteger(parsedValue)) {
+      element.classList.remove('is-invalid')
+      element.classList.add('is-valid')
+    } else {
+      element.classList.remove('is-valid')
+      element.classList.add('is-invalid')
+    }
+  }
+
+  //Funcion resetear todos los formularios
+  let resetForm = () => {
+
+    let forms = document.getElementsByTagName('form')
+
+    //Resetear todos los inputs y deshabilitar botones
+    Array.from(forms).forEach(form => {
+
+      form.reset()
+
+      let btn = form.getElementsByTagName('button')
+
+      //Desabilitar todos los botones
+      Array.from(btn).forEach(btn => {
+        btn.disabled = true
+
+      });
+
+    });
+
+  }
+
+
+  //Devuelve un array con lo que hay en el localstorage 'name'
+  let getLocalList = (name) => {
+
+    data = localStorage.getItem(name)
+
+    if (data) {
+      try {
+        data = JSON.parse(data)
+        return data
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    return []
+
+  }
+
+  //If dni exists on localStorage return false
+  //Else return true
+  let studentExist = (dni, itemStorage) => {
+
+    let students = getLocalList(itemStorage),
+      BreakException = {},
+      flag = true
+
+    //Lo hacemos con try para simular un 'break'.
+    //No exite el break en un forEach y para interrumpir
+    //la ejecucion debemos hacer un 'throw'
+    try {
+      students.forEach((student) => {
+
+        if (parseInt(dni, 10) == parseInt(student.dni, 10)) {
+          flag = false
+          throw 'Break'
+        }
+
+      })
+    } catch (e) {
+      if (e !== 'Break') throw e
     }
 
     return flag
   }
 
 
-  //Eventos
-  document.getElementById('addStudentButton').onclick = (e) => {
-    //Objeto newStudent con los datos que ingresó el usuario
-    e.preventDefault
 
-    let newStudent = getFormValues()
 
-    if (checkFormValues(newStudent)) {
-      //Agregamos esto al localstorage
+  // Linea de abajo ejecutar cuando se hace click en 'Agregar Alumno'
+  let newStudent = getFormValues()
+  // if (!studentExist(newStudent.dni)) {
+  //   //Agregamos esto al localstorage
+  // }
+
+
+  //Activa o desactiva el boton recibido por parametro según las clases que tiene que tener los campos correspondientes
+  let activeBtn = (button) => {
+    let btn = document.getElementById(button),
+      flag = false
+
+
+    switch (button) {
+      case 'deleteStudentButton':
+        flag = document.getElementById('deleteDni').classList.contains('is-valid')
+        break;
+
+      case 'addStudentButton':
+        break;
+
+      case 'searchStudentButton':
+        break;
+
+      default:
+        break;
     }
 
+    if (flag) btn.disabled = false
+
+
+    console.log(btn)
+
   }
 
-  //Hablitar o deshabilitar el boton
-  let clearFields = () => {
-    let forms = document.getElementsByTagName('form')
 
 
-    console.log(forms)
-  }
 
-  clearFields()
 
-  //Cargar y mostrar lo que está en el localstorage
+  //Evento onkeydown de los input
+  document.getElementById('firstName').onkeydown = validateField;
+  document.getElementById('dni').onkeydown = validateField;
+  document.getElementById('deleteDni').onkeydown = validateDni;
 
-  //Pendiente: Linea 316 habilitar o deshabilitar boton, cargar y mostrar lo del localstorage.. etc.
+  //Resetear formularios
+  resetForm()
+  //Refrescar lista de estudiantes (extraida del localstorage)
+  refreshList()
+
+  //Pendiente: 
+  // - Arreglar para que queden funciones ordenadas de firstname y dni, cambiar el validateField por validateDni y crear un validateName o similar
+  //- El item 2 usando lo de abajo y crear funcion validate Dni (separar de validate Field)
+  console.log(studentExist('45678956', 'studentsList'))
+
+  activeBtn('deleteStudentButton')
+
 
 }
