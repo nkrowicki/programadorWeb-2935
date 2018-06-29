@@ -48,24 +48,23 @@
 	
 - 7.1	¿Qué es el sesionStorage y el localStorage?
 - 7.2	¿Qué es un JSON?
-- 7.3	JSON.stringify()
-- 7.4	JSON.parse()
+- 7.3	`JSON.stringify()` y `JSON.parse()`
 
 # 8 DOM [Modulo B]
 	
-- 7.1	¿Qué es el árbol de nodos? 
-- 7.2	Objeto `document`
-- 7.3	Acceso a los nodos
-- 7.3	Crear y eliminar nodos
-- 7.4	Propiedades de los nodos
+- 8.1	¿Qué es el árbol de nodos? 
+- 8.2	Objeto `document`
+- 8.3	Acceso a los nodos
+- 8.3	Crear y eliminar nodos
+- 8.4	Propiedades de los nodos
 
 # 9 Eventos [Modulo B]
 	
 - 9.1	¿Que son los eventos y para qué sirven?
 - 9.2	Eventos como atributos
 - 9.3	Eventos semánticos
-- 9.4	Evento onclick
-- 9.5	Evento onblur
+- 9.4	Evento click
+- 9.5	Evento blur
 
 # 10 Workshop I
 	
