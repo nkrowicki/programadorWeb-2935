@@ -7,7 +7,7 @@ function includesText(text, inText) {
     var inText = inText.toUpperCase()
   } else return false
 
-  if (text.indexOf(inText)) return true
+  if (text.indexOf(inText) === -1) return true
   else return false
 
 }
