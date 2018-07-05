@@ -31,6 +31,8 @@ for (var i = 0; i < localList.length; i++) {
 
 var firstNameInputNode = document.getElementById('firstName')
 
+var lastNameInputNode = document.getElementById('lastName')
+
 firstNameInputNode.onblur = validateEmptyField
 
 function validateEmptyField (event) {
@@ -78,6 +80,32 @@ function validateDniField (event) {
   validateButton()
 }
 
+// Levantar el email y validarlo
+
+var emailInputNode = document.getElementById('email')
+
+emailInputNode.onblur = validateEmailField
+
+function validateEmailField (event) {
+  var inputNode = event.target
+
+  if (
+    !inputNode.value ||
+    inputNode.value.indexOf('@') == -1 ||
+    inputNode.value.indexOf('.') == -1
+  ) {
+    // Caso incorrecto
+    inputNode.classList.remove('is-valid')
+    inputNode.classList.add('is-invalid')
+  } else {
+    // Caso correcto
+    inputNode.classList.remove('is-invalid')
+    inputNode.classList.add('is-valid')
+  }
+
+  validateButton()
+}
+
 // Función que valida si habilitar o no el botón de agregar
 
 var addStudentButtonNode = document.getElementById('addStudentButton')
@@ -85,7 +113,7 @@ var addStudentButtonNode = document.getElementById('addStudentButton')
 function validateButton () {
   var isValidInputNodes = document.getElementsByClassName('is-valid')
 
-  if (isValidInputNodes.length === 2) {
+  if (isValidInputNodes.length === 3) {
     addStudentButtonNode.disabled = false
   } else {
     addStudentButtonNode.disabled = true
@@ -99,8 +127,10 @@ addStudentButtonNode.onclick = addStudent
 function addStudent (event) {
   var firstName = firstNameInputNode.value
   var dni = dniInputNode.value
+  var lastName = lastNameInputNode.value
+  var email = emailInputNode.value
 
-  var newStudent = new Student(firstName, null, dni, null)
+  var newStudent = new Student(firstName, lastName, dni, email)
 
   newStudentsList.push(newStudent)
 
@@ -113,15 +143,87 @@ function addStudent (event) {
   // Limpieza del formulario
   firstNameInputNode.value = ''
   dniInputNode.value = ''
+  lastNameInputNode.value = ''
+  emailInputNode.value = ''
 
   firstNameInputNode.classList.remove('is-valid')
   dniInputNode.classList.remove('is-valid')
+  lastNameInputNode.classList.remove('is-valid')
+  emailInputNode.classList.remove('is-valid')
 
   addStudentButtonNode.disabled = true
-  console.log(newStudentsList)
 }
 
-// Función que busqued un dni
+// Levanto el campo de borrado por dni y lo valido
+
+var deleteDniInputNode = document.getElementById('deleteDni')
+
+deleteDniInputNode.onblur = validateDeleteDniField
+
+var deleteStudentButton = document.getElementById('deleteStudentButton')
+
+function validateDeleteDniField (event) {
+  var inputNode = event.target
+
+  if (!inputNode.value) {
+    // Caso incorrecto
+    inputNode.classList.add('is-invalid')
+    deleteStudentButton.disabled = true
+  } else {
+    // Caso correcto
+    inputNode.classList.remove('is-invalid')
+    deleteStudentButton.disabled = false
+  }
+}
+
+// Función que elimina un estudiante
+
+deleteStudentButton.onclick = deleteStudent
+
+function deleteStudent () {
+  var dni = deleteDniInputNode.value
+
+  var index = searchStudentIndexByDni(dni, newStudentsList)
+
+  if (index !== -1) {
+    var studentNode = document.getElementById(dni)
+
+    mainListNode.removeChild(studentNode)
+
+    newStudentsList.splice(index, 1)
+
+    setLocalList(LS_KEY, newStudentsList)
+  }
+
+  deleteDniInputNode.value = ''
+  deleteStudentButton.disabled = true
+}
+
+// Función que busca estudiante
+
+var searchTextInputNode = document.getElementById('searchText')
+
+var searchStudentButton = document.getElementById('searchStudentButton')
+
+var searchListNode = document.getElementById('searchList')
+
+searchStudentButton.onclick = searchStudent
+
+function searchStudent () {
+  var text = searchTextInputNode.value
+
+  searchListNode.innerHTML = ''
+
+  var index = searchStudentIndexByText(text, newStudentsList)
+
+  if (index !== -1) {
+    var liNode = createStudentNode(newStudentsList[index])
+
+    searchListNode.appendChild(liNode)
+  }
+}
+
+// Función que busque un dni
 
 function searchStudentIndexByDni (dni, studentsList) {
   var index = -1
@@ -230,5 +332,47 @@ function setLocalList (key, list) {
     var strList = JSON.stringify(list)
     // Guardo en el localStorage pisando la key
     localStorage.setItem(key, strList)
+  }
+}
+
+// Clase 05 combinada con la de la clase 07
+
+/**
+ * Función que permite buscar la posición de un estudiante en el array,
+ * comparando nombre o apellido por valor exacto
+ * @param {String} nameOrLastName 
+ * @param {Array} studentsList 
+ */
+
+function searchStudentIndexByText (nameOrLastName, studentsList) {
+  var index = -1
+  for (var i = 0; i < studentsList.length; i++) {
+    var student = studentsList[i]
+    if (
+      includesText(nameOrLastName, student.firstName) ||
+      includesText(nameOrLastName, student.lastName)
+    ) {
+      index = i
+      break
+    }
+  }
+  return index
+}
+
+// Clase 07
+
+function includesText (text, baseText) {
+  // Valido que ambos parámetros sean string
+  if (typeof text === 'string' && typeof baseText === 'string') {
+    // Verifico si el primer parámetro se encuentra dentro del segundo
+    var textUpperCase = text.toUpperCase()
+    var baseTextUpperCase = baseText.toUpperCase()
+    if (baseTextUpperCase.indexOf(textUpperCase) !== -1) {
+      return true
+    } else {
+      return false
+    }
+  } else {
+    return false
   }
 }

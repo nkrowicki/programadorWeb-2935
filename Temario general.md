@@ -55,8 +55,8 @@
 - 8.1	¿Qué es el árbol de nodos? 
 - 8.2	Objeto `document`
 - 8.3	Acceso a los nodos
-- 8.3	Crear y eliminar nodos
-- 8.4	Propiedades de los nodos
+- 8.4	Crear y eliminar nodos
+- 8.5	Propiedades de los nodos
 
 # 9 Eventos [Modulo B]
 	
@@ -78,11 +78,10 @@
 
 # 12 JQuery [Modulo C]
 
-- 12.1 ¿Qué es jQuery?
-- 12.2 ¿Para que sirve?
-- 12.3 ¿Como descargarlo e incluirlo en el proyecto?
-- 12.4 Minificado vs no minificado
-- 12.5 Equivalencias en jQuery de los métodos vistos hasta ahora
+- 12.1 ¿Qué es jQuery? y ¿Para que sirve?
+- 12.2 ¿Como descargarlo e incluirlo en el proyecto?
+- 12.3 Minificado vs no minificado
+- 12.4 Equivalencias en jQuery de algunos de los métodos y propiedades vistos hasta ahora
 
 # 13 JQuery Selectores y eventos [Modulo C]
 
