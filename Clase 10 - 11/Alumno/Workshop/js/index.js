@@ -1,115 +1,11 @@
-//-----------------------------Start clase5
-// Datos
-// var students = [{
-//     firstName: 'Juan',
-//     lastName: 'Pérez',
-//     dni: 45678987,
-//     email: 'juan@gmail.com'
-//   },
-//   {
-//     firstName: 'Ana',
-//     lastName: 'Fernandez',
-//     dni: 45678989,
-//     email: 'ana@gmail.com'
-//   },
-//   {
-//     firstName: 'Pedro',
-//     lastName: 'Mármol',
-//     dni: 45678956,
-//     email: 'pedro@gmail.com'
-//   }
-// ]
-
-
-//-----------------------------Fin clase5
-
-
-//-----------------------------Inicio clase7
-//------------------------Inicio Desafio
-
-var saveLocalList = (key, value) => {
-
-  if (key !== null && value !== null) {
-    try {
-      value = JSON.stringify(value)
-      localStorage.setItem(key, value)
-    } catch (e) {
-      console.log(e)
-
-    }
-  }
-}
-
-//saveLocalList('studentsList', studentsList)
-
-
-//-----------Fin Desafio
-
-//-----------Inicio Ejercicio
-
 /**
  * Defino la función setLocalList
  * @param { string } key 
  * @param { array } list 
  */
-function setLocalList(key, list) {
-  // Verifico los parámetros recibidos
-  if (typeof key === 'string' && Array.isArray(list)) {
-    // Convierto a JSON el array
-    var strList = JSON.stringify(list)
-    // Guardo en el localStorage pisando la key
-    localStorage.setItem(key, strList)
-  }
-}
-
-// Pruebo la función
-//setLocalList('studentsList', studentsList)
-
-
-//-----------Fin Ejercicio
-//-----------------------------Fin clase7
-
-
-
-//------------------------------Inicio clase8
-
-// Datos de la clase 5
-var studentsList = [{
-    firstName: 'Juan',
-    lastName: 'Pérez',
-    dni: 45678987,
-    email: 'juan@gmail.com'
-  },
-  {
-    firstName: 'Ana',
-    lastName: 'Fernandez',
-    dni: 45678989,
-    email: 'ana@gmail.com'
-  },
-  {
-    firstName: 'Pedro',
-    lastName: 'Mármol',
-    dni: 45678956,
-    email: 'pedro@gmail.com'
-  }
-]
-
-setLocalList('studentsList', studentsList)
-
-
-//------------------- Fin clase8
-
-
-
-
-
-
-
 
 
 //App start
-
-
 
 
 window.onload = () => {
@@ -118,6 +14,12 @@ window.onload = () => {
   let isWord = (word) => {
     if (/^[a-zA-Z]+$/.test(word)) return true
     else return false
+  }
+
+  //Funcion que devuelve true si el correo es correcto o caso contrario false
+  function validateEmail(email) {
+    var re = /^(?:[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&amp;'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$/;
+    return re.test(email);
   }
 
   //Creacion de clase Student la cual luego va a ser instanciada para crear los objetos
@@ -170,13 +72,14 @@ window.onload = () => {
     liNode.className = 'list-group-item';
     //Aux Element
     let auxElement
-    let flagName = false
+    let flagName = false,
+      //flag usado para saber si hay que tener en cuenta ese valor para crear el elemento y hacer appenchild
+      flagAdd = true
 
     //Iterando un objeto usando foreach, devuelve un nodo listo para agregar
     // Object.entries devuelve una matriz de pares propios de una propiedad enumerable [key, value]
     //  de un objeto dado, en el mismo orden que es proporcionado por for...in 
     // (La diferencia es que un bucle for-in enumera las propiedades en la cadena de prototype). 
-
     Object.entries(alumn).forEach((element, i) => {
       const [key, value] = element;
 
@@ -196,24 +99,33 @@ window.onload = () => {
           liNode.className += ' ' + value
           break;
 
-        case 'email':
+        case 'mail':
           auxElement = d.createElement('p')
           auxElement.innerHTML = 'Email: '
           break;
 
         default:
-          auxElement = d.createElement('p')
+          flagAdd = false
           break;
       }
 
-      auxElement.innerHTML += value
-      liNode.appendChild(auxElement)
+      if (flagAdd) {
+        auxElement.innerHTML += value
+        liNode.appendChild(auxElement)
+      }
     });
     return liNode
   }
 
+  //Limpiar la lista de estudiantes de la pantalla (Vaciar html)
+  let clearList = (lista) => {
+    var myList = document.getElementById(lista);
+    myList.innerHTML = '';
+  }
+
   //Cargar lo del localstorage y mostrarlo
   let refreshList = () => {
+    clearList('mainList')
     let students = getLocalList('studentsList') // Debe devolver siempre un Array [] vacío o con elementos [...]
     viewStudents(students)
   }
@@ -234,69 +146,88 @@ window.onload = () => {
   }
 
   //Funcion que valida el campo
-  //incorrecto-> Colorea en rojo el campo incorrecto y Deshabilita el botón 'Agregar Alumno'
-  //correcto- > Habilita el botón 'Agregar alumno'
+  //incorrecto->Agrega clase is-invalid al input en cuesion
+  //correcto- > Agrega clase is-valid al input en cuesion
   let validateField = (e) => {
 
-    let dni = document.getElementById('dni'),
-      firstName = document.getElementById('firstName'),
-      btnAddAlumn = document.getElementById('addStudentButton'),
-      dataInput = e.target.value
-
-    switch (e.target.id) {
-
-      case 'dni':
-        //Check dni
-        parsedValue = parseInt(dataInput, 10)
-
-        if (!isNaN(dataInput) && dataInput !== null && dataInput !== '' && parsedValue > 0 && Number.isInteger(parsedValue)) {
-          dni.classList.remove('is-invalid')
-          dni.classList.add('is-valid')
-        } else {
-          dni.classList.remove('is-valid')
-          dni.classList.add('is-invalid')
-        }
-
-        break;
-
-      case 'firstName':
-        //Check firstName
-
-        if (dataInput !== null && dataInput !== '' && isWord(dataInput)) {
-          firstName.classList.remove('is-invalid')
-          firstName.classList.add('is-valid')
-        } else {
-          firstName.classList.remove('is-valid')
-          firstName.classList.add('is-invalid')
-        }
-
-        break;
-
-      default:
-        break;
-    }
-
-    if (firstName.classList.contains('is-valid') && dni.classList.contains('is-valid')) {
-      btnAddAlumn.disabled = false
-    } else {
-      btnAddAlumn.disabled = true
-    }
-  }
-
-  //Valida dni y asigna al input correspondiente la clase correspondiente (is-invalid o is-valid)
-  let validateDni = (e) => {
     let element = e.target,
-      dataInput = element.value
-    //Check dni
-    parsedValue = parseInt(element.value, 10)
+      dataInput = element.value,
+      flag = false
 
-    if (!isNaN(dataInput) && dataInput !== null && dataInput !== '' && parsedValue > 0 && Number.isInteger(parsedValue)) {
+    if (dataInput !== null && dataInput !== '') {
+
+      switch (element.id) {
+
+        case 'dni':
+        case 'deleteDni':
+          //Check dni
+          parseValue = parseInt(element.value, 10)
+
+          if (!isNaN(dataInput) && parseValue > 0 && Number.isInteger(parseValue)) {
+            flag = true
+          }
+
+          //Si ya existe el dni..
+          if (element.id === 'dni') {
+            if (!studentExist(parseValue, 'studentsList')) flag = false
+          }
+
+          break;
+
+        case 'firstName':
+        case 'searchText':
+          //Check firstName
+
+          if (isWord(dataInput)) {
+            flag = true
+          }
+          break;
+
+        case 'email':
+          if (validateEmail(dataInput)) {
+            flag = true
+          }
+          break;
+
+        default:
+          break;
+      }
+
+    } //if
+
+    //Usamos el flag para agregar/sacar clase al elemento input
+    if (flag) {
       element.classList.remove('is-invalid')
       element.classList.add('is-valid')
     } else {
       element.classList.remove('is-valid')
       element.classList.add('is-invalid')
     }
+
+    switch (element.id) {
+
+      case 'dni':
+      case 'firstName':
+      case 'email':
+
+        activeBtn('addStudentButton')
+
+        break;
+      case 'searchText':
+        activeBtn('searchStudentButton')
+        break;
+
+      case 'deleteDni':
+
+        activeBtn('deleteStudentButton')
+
+        break;
+
+
+      default:
+        break;
+    }
+
   }
 
   //Funcion resetear todos los formularios
@@ -311,16 +242,18 @@ window.onload = () => {
 
       let btn = form.getElementsByTagName('button')
 
-      //Desabilitar todos los botones
+      //Desabilitar todos los botones 
       Array.from(btn).forEach(btn => {
         btn.disabled = true
+        // btn.onsubmit = (e) => {
+        //   e.preventDefault()
+        // }
 
       });
 
     });
 
   }
-
 
   //Devuelve un array con lo que hay en el localstorage 'name'
   let getLocalList = (name) => {
@@ -337,6 +270,20 @@ window.onload = () => {
     }
     return []
 
+  }
+
+  let saveLocalList = (key, value) => {
+
+    if (key !== null && typeof key === 'string' && value !== null && Array.isArray(value)) {
+      try {
+        //Convierto a json el array
+        value = JSON.stringify(value)
+        // Guardo en el localStorage pisando la key
+        localStorage.setItem(key, value)
+      } catch (e) {
+        console.log(e)
+      }
+    }
   }
 
   //If dni exists on localStorage return false
@@ -366,21 +313,10 @@ window.onload = () => {
     return flag
   }
 
-
-
-
-  // Linea de abajo ejecutar cuando se hace click en 'Agregar Alumno'
-  let newStudent = getFormValues()
-  // if (!studentExist(newStudent.dni)) {
-  //   //Agregamos esto al localstorage
-  // }
-
-
   //Activa o desactiva el boton recibido por parametro según las clases que tiene que tener los campos correspondientes
   let activeBtn = (button) => {
     let btn = document.getElementById(button),
       flag = false
-
 
     switch (button) {
       case 'deleteStudentButton':
@@ -388,42 +324,124 @@ window.onload = () => {
         break;
 
       case 'addStudentButton':
+        flag = document.getElementById('firstName').classList.contains('is-valid')
+        if (flag) flag = document.getElementById('dni').classList.contains('is-valid')
+        if (flag) flag = document.getElementById('email').classList.contains('is-valid')
         break;
 
       case 'searchStudentButton':
+        flag = document.getElementById('searchText').classList.contains('is-valid')
         break;
 
       default:
         break;
     }
 
-    if (flag) btn.disabled = false
+    if (flag) {
+      btn.disabled = false
+    } else {
+      btn.disabled = true
+    }
+
+  }
+
+  // Funcion agregar alumno
+  let addAlumn = () => {
+
+    let flag = false
+
+    let newStudent = getFormValues()
+    if (studentExist(newStudent.dni, 'studentsList')) {
+
+      flag = true
+      //Obtenemos lo que hay en el localList
+      let students = getLocalList('studentsList') // Debe devolver siempre un Array [] vacío o con elementos [...]
+      //Agregamos el nuevo estudiante
+      students.push(newStudent)
+      //Guardamos la nueva lista de estudiantes en el localList
+      saveLocalList('studentsList', students)
+    }
 
 
-    console.log(btn)
+    if (flag) refreshList()
+
+  }
+
+  let deleteAlumn = () => {
+
+
+    let flag = false,
+      flagIndex = -1,
+      dni = document.getElementById('deleteDni').value
+
+    // Si el estudiante existe...
+    if (!studentExist(dni, 'studentsList')) {
+
+      flag = true
+
+      //Obtenemos lo que hay en el localList
+      let students = getLocalList('studentsList') // Debe devolver siempre un Array [] vacío o con elementos [...]
+      students.forEach((student, i) => {
+
+        if (parseInt(dni, 10) == parseInt(student.dni, 10)) {
+          //Eliminar este estudiante
+          flagIndex = i
+        }
+      })
+
+      //filter() crea un nuevo array con todos los elementos que cumplan la condición implementada por la función dada.
+      const newList = students.filter((students, index) => index != flagIndex);
+      saveLocalList('studentsList', newList)
+    }
+
+    if (flag) refreshList()
+
+  }
+
+  //Busca un estudiante coincidencias en nombre o apellido.
+  //Muestra los que coincidan con lo que ingreso el usuario
+  //Lo hace trabajando sobre el dom 
+  let searchAlumn = () => {
+
+    // Declare variables
+    let input = document.getElementById('searchText'),
+      filter = input.value.toUpperCase(),
+      ul = document.getElementById("mainList"),
+      li = ul.getElementsByTagName('li'),
+      flagAux = -1
+
+    // Loop through all list items, and hide those who don't match the search query
+    Array.from(li).forEach((element, i) => {
+
+      console.log(element.getElementsByTagName('h1')[0].innerHTML)
+
+      let a = element.getElementsByTagName('h1')[0]
+
+      if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        li[i].style.display = "";
+      } else {
+        li[i].style.display = "none";
+      }
+    }) //foreach
 
   }
 
 
+  //Eventos de input
+  document.getElementById('firstName').onkeyup = validateField;
+  document.getElementById('dni').onkeyup = validateField;
+  document.getElementById('deleteDni').onkeyup = validateField;
+  document.getElementById('email').onkeyup = validateField;
+  document.getElementById('searchText').onkeyup = searchAlumn;
 
-
-
-  //Evento onkeydown de los input
-  document.getElementById('firstName').onkeydown = validateField;
-  document.getElementById('dni').onkeydown = validateField;
-  document.getElementById('deleteDni').onkeydown = validateDni;
+  //Eventos de button
+  document.getElementById('addStudentButton').onclick = addAlumn;
+  document.getElementById('deleteStudentButton').onclick = deleteAlumn;
+  document.getElementById('searchStudentButton').onclick = searchAlumn;
 
   //Resetear formularios
   resetForm()
   //Refrescar lista de estudiantes (extraida del localstorage)
   refreshList()
-
-  //Pendiente: 
-  // - Arreglar para que queden funciones ordenadas de firstname y dni, cambiar el validateField por validateDni y crear un validateName o similar
-  //- El item 2 usando lo de abajo y crear funcion validate Dni (separar de validate Field)
-  console.log(studentExist('45678956', 'studentsList'))
-
-  activeBtn('deleteStudentButton')
-
 
 }
