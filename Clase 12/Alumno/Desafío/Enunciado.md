@@ -1,4 +1,4 @@
-# Validar el campo email usando jQuery
+•••••••••••# Validar el campo email usando jQuery
 
 El formulario deberá validar el campo email verificando que contenga arroba, punto y contenido. Si existe algún error deberá mostrar el campo en rojo
 
