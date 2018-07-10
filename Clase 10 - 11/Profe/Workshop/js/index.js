@@ -91,8 +91,8 @@ function validateEmailField (event) {
 
   if (
     !inputNode.value ||
-    inputNode.value.indexOf('@') == -1 ||
-    inputNode.value.indexOf('.') == -1
+    inputNode.value.indexOf('@') === -1 ||
+    inputNode.value.indexOf('.') === -1
   ) {
     // Caso incorrecto
     inputNode.classList.remove('is-valid')
