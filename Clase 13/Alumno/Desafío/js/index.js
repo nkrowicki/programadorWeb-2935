@@ -14,23 +14,34 @@ $(function () {
 
   var checkBtn = function () {
 
-    let longitudTotal = 0
+    let flag = false
 
     //Chequear si todos los inputs tienen longitud mayor a 0 (sumamos la longitud de cada uno)
-    $(':input').each(function () {
-      longitudTotal += $(this).val().length
-    });
+    if ($('#firstName').val().length > 0) {
+      flag = true
+    }
 
-    //TODO: Chequear bien el boton, sumando la totalidad de todos para que sea 
-    // Mayor o igual que la catidad de objetos en cuestio que hay
+    if (flag) {
+      if ($('#comments').val().length > 0) {
+        flag = true
+      } else flag = false
+    }
+
+    if (flag) {
+      if ($('#comments').val().length > 0) {
+        flag = true
+      } else flag = false
+    }
 
 
-    //Si no existe algun error en el sitio (chequemaos por clase)
-    if (!$('.alert-danger').length > 0 && longitudTotal > 3) {
+    console.log("valor flag: " + flag)
+
+    //Si no existe algun error en el sitio (chequemaos por clase y por largo de los inputs)
+    if ($('.alert-danger').length === 0 && flag) {
+      //Habilitar boton
       $('#submitButton').prop('disabled', false);
     } else {
       $('#submitButton').prop('disabled', true);
-
     }
 
   }
@@ -97,6 +108,8 @@ $(function () {
   var inputFirstName = $('#firstName')
   var inputMail = $('#email')
   var inputComments = $('#comments')
+  $('#submitButton').prop('disabled', true);
+
 
   inputMail.keyup(checkEmail)
   inputMail.focus(checkEmail)
