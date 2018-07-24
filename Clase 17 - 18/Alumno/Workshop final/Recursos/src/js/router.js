@@ -6,7 +6,6 @@ import localStorageController from './controllers/localStorageController'
 import contactController from './controllers/contactController'
 
 
-
 $(document).ready(function () {
   console.log('Init app')
 
@@ -23,6 +22,10 @@ $(document).ready(function () {
   })
 
   crossroads.addRoute('#/', function () {
+    $('#root').load('./partials/home.html', homeController)
+  })
+
+  crossroads.addRoute('/', function () {
     $('#root').load('./partials/home.html', homeController)
   })
 

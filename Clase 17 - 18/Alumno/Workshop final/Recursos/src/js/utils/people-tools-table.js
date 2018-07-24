@@ -1,13 +1,13 @@
 class People {
 
-  constructor(id, name, genre, height, weight, eyeColor) {
-    // let person = new Person(name,genre,height, weight, eyeColor)
+  constructor(id, name, gender, height, mass, skin_color) {
+    // let person = new Person(name,gender,height, mass, skin_color)
 
     this.name = name
-    this.genre = genre
+    this.gender = gender
     this.height = height
-    this.weight = weight
-    this.eyeColor = eyeColor
+    this.mass = mass
+    this.skin_color = skin_color
 
     this.id = id
   }
@@ -22,14 +22,14 @@ class People {
 }
 
 //Recibe el genero en ingles o n/a y retorna su significado en español
-let calculateGender = (gender) => {
+let calculateGender = (gender = 'Desconocido') => {
   if (gender === 'female') return 'Mujer'
   else if (gender === 'male') return 'Hombre'
   else return 'Desconocido'
 }
 
 //Recibe string con colores separados por coma en ingles y retorna su significado en español
-let calculateColor = (colors) => {
+let calculateColor = (colors = 'Desconocido') => {
 
   let auxColor = ''
 
@@ -109,7 +109,9 @@ let translateMassHeight = (data, type) => {
 }
 
 //Devuelve un nodo listo para incrustar
-let createBichoNode = (people, id) => {
+//Translate es boolean: si es falso -> no se traduce nada y se pone el boton eliminar
+//Translate es boolean: si es true -> Se traduce todo lo que se indica y se pone boton agregar
+let createBichoNode = (people, id, translate) => {
 
   let d = document
   //Create element 'li'
@@ -118,13 +120,21 @@ let createBichoNode = (people, id) => {
   $(trNode).attr('id', id)
   $(trNode).attr('style', 'overflow: hidden')
 
+
+  if (translate) {
+    people.gender = calculateGender(people.gender)
+    people.height = translateMassHeight(people.height, 'height')
+    people.mass = translateMassHeight(people.mass, 'mass')
+    people.skin_color = calculateColor(people.skin_color)
+  }
+
   let valores = [
     id,
     people.name,
-    calculateGender(people.gender),
-    `${translateMassHeight(people.height,'height')}`,
-    `${translateMassHeight(people.mass,'mass')}`,
-    calculateColor(people.skin_color),
+    people.gender,
+    people.height,
+    people.mass,
+    people.skin_color,
     null
   ]
 
@@ -144,8 +154,15 @@ let createBichoNode = (people, id) => {
       tdElement.style.padding = 0
 
       let addBtn = d.createElement('button')
-      $(addBtn).addClass('btn btn-success')
-      $(addBtn).text('Agregar')
+
+      if (translate) {
+        $(addBtn).addClass('btn btn-success')
+        $(addBtn).text('Agregar')
+      } else {
+        $(addBtn).addClass('btn btn-danger')
+        $(addBtn).text('Eliminar')
+      }
+
       addBtn.setAttribute('type', 'button')
 
       tdElement.appendChild(addBtn)
@@ -155,26 +172,6 @@ let createBichoNode = (people, id) => {
   });
 
   return trNode
-}
-
-//Muestra la lista recibida (array) en la tabla encontrada por su id
-let showNames = (results) => {
-
-  let people
-  for (let i = 0; i < results.length; i++) {
-    people = results[i]
-
-    let mainList = $('#tableBody')
-    //childrensCount usada para saber cuantos hijos tiene la lista
-    let childrensCount = mainList.children().length
-    //Llamamos a la funcion enviando datos del nodo que tiene que crear y el nro que le tiene que poner
-    let peopleNode = createBichoNode(people, childrensCount++)
-
-    // Add child to DOM-> ul (mainList)
-    mainList.append(peopleNode)
-
-  }
-
 }
 
 // Oculta el elemento recibido por parametro
@@ -188,14 +185,41 @@ let getRowValues = (id) => {
 
   let
     name = document.getElementById(id).children[1].textContent,
-    genre = document.getElementById(id).children[2].textContent,
+    gender = document.getElementById(id).children[2].textContent,
     height = document.getElementById(id).children[3].textContent,
-    weight = document.getElementById(id).children[4].textContent,
-    eyeColor = document.getElementById(id).children[5].textContent
+    mass = document.getElementById(id).children[4].textContent,
+    skin_color = document.getElementById(id).children[5].textContent
 
-  let people = new People(id, name, genre, height, weight, eyeColor)
+  let people = new People(id, name, gender, height, mass, skin_color)
 
   return people
+}
+
+//If key exists on localStorage return true else return true
+//Recibe 'id' y nombre de clave en localstorage (itemstorage)
+let peopleExist = (id, itemStorage) => {
+
+  let people = getLocalList(itemStorage),
+    BreakException = {},
+    flag = false
+
+  //Lo hacemos con try para simular un 'break'.
+  //No exite el break en un forEach y para interrumpir
+  //la ejecucion debemos hacer un 'throw'
+  try {
+    people.forEach((people) => {
+
+      if (parseInt(id, 10) == parseInt(people.id, 10)) {
+        flag = true
+        throw 'Break'
+      }
+
+    })
+  } catch (e) {
+    if (e !== 'Break') throw e
+  }
+
+  return flag
 }
 
 
@@ -204,7 +228,7 @@ export {
   calculateColor,
   translateMassHeight,
   createBichoNode,
-  showNames,
   removeElementWithAnimation,
-  getRowValues
+  getRowValues,
+  peopleExist
 }
