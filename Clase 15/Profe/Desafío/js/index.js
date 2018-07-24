@@ -8,12 +8,13 @@ function getData (url, cbk) {
     })
 }
 
-getData('https://swapi.co/api/people', getAllList)
+getData('https://swapi.co/api/people/?page=5', getAllList)
 
 function getAllList (error, data) {
   if (data.results) {
     showNames(data.results)
   }
+
   if (data.next) {
     getData(data.next, getAllList)
   }

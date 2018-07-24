@@ -79,18 +79,27 @@
 //   }
 // })
 
-var pepe = function () {
-  console.log('Hola')
-  function parseInt (pepe) {
-    return 'Pato ' + pepe
-  }
+// var pepe = function () {
+//   console.log('Hola')
+//   function parseInt (pepe) {
+//     return 'Pato ' + pepe
+//   }
 
-  console.log('Adentro', parseInt('87', 10))
+//   console.log('Adentro', parseInt('87', 10))
 
-  console.log('Adentro', window.parseInt('87', 10))
-}
-pepe()
+//   console.log('Adentro', window.parseInt('87', 10))
+// }
+// pepe()
 
-console.log('Afuera', parseInt('87', 10))
+// console.log('Afuera', parseInt('87', 10))
 
-console.log('Afuera', window.parseInt('87', 10))
+// console.log('Afuera', window.parseInt('87', 10))
+// import showNamePepe from './pepe'
+
+// var showNamePepe = (function () {
+//   function showName () {
+//     console.log('Soy pepe')
+//   }
+
+//   return showName
+// })()

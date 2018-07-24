@@ -11,7 +11,7 @@ function getData (url, cbk) {
 getData('https://swapi.co/api/people/5', showData)
 
 function showData (error, data) {
-  if (data) {
+  if (!error) {
     console.log(data)
   }
 }
