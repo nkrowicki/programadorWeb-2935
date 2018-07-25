@@ -4,6 +4,7 @@ import homeController from './controllers/homeController'
 import peopleController from './controllers/peopleController'
 import localStorageController from './controllers/localStorageController'
 import contactController from './controllers/contactController'
+import searchController from './controllers/searchController'
 
 
 $(document).ready(function () {
@@ -11,6 +12,10 @@ $(document).ready(function () {
 
   crossroads.addRoute('#/local-storage', function () {
     $('#root').load('./partials/local-storage.html', localStorageController)
+  })
+
+  crossroads.addRoute('#/search', function () {
+    $('#root').load('./partials/search.html', searchController)
   })
 
   crossroads.addRoute('#/people', function () {
